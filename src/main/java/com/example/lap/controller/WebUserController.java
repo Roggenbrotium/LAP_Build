@@ -4,6 +4,7 @@ import com.example.lap.dao.Basket;
 import com.example.lap.dao.WebUser;
 import com.example.lap.dao.WebUserRepository;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,7 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Controller;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY;
@@ -41,7 +42,7 @@ public class WebUserController {
      * Registers a user with the given credentials
      */
     @PostMapping("/register")
-    public String registerUser(@RequestParam String email, @RequestParam(required = false) String telephone,
+    public ResponseEntity<?> registerUser(@RequestParam String email, @RequestParam(required = false) String telephone,
                                   @RequestParam(required = false) String billingAddress, @RequestParam(required = false) String deliveryAddress,
                                   @RequestParam String password) {
         Basket basket = new Basket();
@@ -51,10 +52,10 @@ public class WebUserController {
         user.setPassword(encodedPassword);
 
         if (webUserRepository.findUserByEmail(email) != null) {
-            return "user_already_exists";
+            return new ResponseEntity<>("User already exists!", HttpStatus.OK);
         } else  {
             webUserRepository.saveAndFlush(user);
-            return "register_success";
+            return new ResponseEntity<>("Registration successfull!", HttpStatus.OK);
         }
     }
 
@@ -71,6 +72,19 @@ public class WebUserController {
         //make the session available for all subsequent requests and create one if not already there
         HttpSession session = req.getSession(true);
         session.setAttribute(SPRING_SECURITY_CONTEXT_KEY, sc);
-        return new ResponseEntity<>("User signed-in successfully!.", HttpStatus.OK);
+        return new ResponseEntity<>("User signed-in successfully!", HttpStatus.OK);
+    }
+
+    /**
+     * Invalidates session
+     */
+    @GetMapping("/logout")
+    public ResponseEntity<?> logOutUser(HttpServletRequest req, HttpServletResponse res) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null) {
+            new SecurityContextLogoutHandler().logout(req, res, authentication);
+        }
+
+        return new ResponseEntity<>("User signed-out successfully!", HttpStatus.OK);
     }
 }

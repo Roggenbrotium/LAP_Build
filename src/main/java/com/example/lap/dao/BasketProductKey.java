@@ -15,6 +15,14 @@ public class BasketProductKey implements Serializable {
     @Column(name = "basket_id")
     private Long basketId;
 
+    public BasketProductKey() {
+    }
+
+    public BasketProductKey(Long productId, Long basketId) {
+        this.productId = productId;
+        this.basketId = basketId;
+    }
+
     public Long getProductId() {
         return productId;
     }

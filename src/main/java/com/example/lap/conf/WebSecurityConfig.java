@@ -1,6 +1,6 @@
 package com.example.lap.conf;
 
-import com.example.lap.service.CustomUserDetailsService;
+import com.example.lap.service.CustomUserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,7 +22,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class WebSecurityConfig {
     @Bean
     public UserDetailsService userDetailsService() {
-        return new CustomUserDetailsService();
+        return new CustomUserDetailsServiceImpl();
     }
 
     @Bean

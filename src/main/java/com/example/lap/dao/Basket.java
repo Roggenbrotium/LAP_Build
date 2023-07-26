@@ -24,8 +24,4 @@ public class Basket {
     public Set<BasketProduct> getBasketProducts() {
         return basketProducts;
     }
-
-    public void setBasketProducts(Set<BasketProduct> basketProducts) {
-        this.basketProducts = basketProducts;
-    }
 }

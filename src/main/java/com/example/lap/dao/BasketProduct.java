@@ -22,6 +22,16 @@ public class BasketProduct {
 
     private int amount;
 
+    public BasketProduct() {
+    }
+
+    public BasketProduct(Product product, Basket basket, int amount) {
+        this.product = product;
+        this.basket = basket;
+        this.amount = amount;
+        this.id = new BasketProductKey(product.getId(), basket.getId());
+    }
+
     public BasketProductKey getId() {
         return id;
     }
