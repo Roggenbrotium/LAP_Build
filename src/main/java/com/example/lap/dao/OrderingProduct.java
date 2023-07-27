@@ -22,6 +22,16 @@ public class OrderingProduct {
 
     private int amount;
 
+    public OrderingProduct() {
+    }
+
+    public OrderingProduct(Product product, Ordering ordering, int amount) {
+        this.product = product;
+        this.ordering = ordering;
+        this.amount = amount;
+        this.id = new OrderingProductKey(product.getId(), ordering.getId());
+    }
+
     public OrderingProductKey getId() {
         return id;
     }

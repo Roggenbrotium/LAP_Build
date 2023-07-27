@@ -25,13 +25,16 @@ public class WebUser {
     @Column(length = 50)
     private String deliveryAddress;
 
+    @Column(nullable = false)
     private String password;
+
+    private boolean deleted;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "basket_id", referencedColumnName = "id")
     private Basket basket;
 
-    @OneToMany(mappedBy = "webUser", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "webUser")
     private Set<Ordering> orderings;
 
     public WebUser() {
@@ -92,6 +95,14 @@ public class WebUser {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 
     public Basket getBasket() {

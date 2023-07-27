@@ -2,40 +2,47 @@ package com.example.lap.controller;
 
 import com.example.lap.dao.Product;
 import com.example.lap.dao.ProductRepository;
+import com.example.lap.dto.ProductDTO;
+import com.example.lap.dto.ProductIdDTO;
+import com.example.lap.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Api endpoint for product interaction
  */
 @Controller
-@RequestMapping(path="/product")
+@RequestMapping(path="/api/product")
 public class ProductController {
     @Autowired
     private ProductRepository productRepository;
 
-    @PostMapping(path="/add")
-    public @ResponseBody String addNewProduct (@RequestParam String name) {
-        Product product = new Product();
-        product.setName(name);
-        productRepository.saveAndFlush(product);
-        return "Saved";
-    }
+    @Autowired
+    private ProductService productService;
 
     @GetMapping(path="/all")
     public @ResponseBody Iterable<Product> listAllProducts() {
-        // This returns a JSON or XML with the products
         return productRepository.findAll();
     }
 
-    @PostMapping(path="/get")
-    public @ResponseBody Product getProductById(@RequestParam Long id) {
-        // This returns a JSON or XML with the users
+    @GetMapping(path="/get/{id}")
+    public @ResponseBody Product getProductById(@PathVariable Long id) {
         return productRepository.findProductById(id);
+    }
+
+    @PostMapping(path="/many")
+    public @ResponseBody Set<ProductDTO> getProductsByIds(@RequestBody ProductIdDTO productIdDTO) {
+        Set<Product> products = productRepository.findProductByIdIn(productIdDTO.getIds());
+        Set<ProductDTO> productDTOS = new HashSet<>();
+
+        for (Product product: products) {
+            productDTOS.add(productService.mapProductToProductDTO(product));
+        }
+
+        return productDTOS;
     }
 }

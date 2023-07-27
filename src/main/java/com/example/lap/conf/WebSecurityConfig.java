@@ -20,6 +20,20 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig {
+    private static final String[] NO_AUTH_REQUIRED = {
+            "/api/user/**",
+            "/api/product/**",
+            "/api/ordering/**",
+            "/api/statistics/**",
+    };
+
+    private static final String[] AUTH_REQUIRED = {
+            "/api/user/delete",
+            "/api/user/get",
+            "/api/user/update",
+            "/api/user/update/password",
+    };
+
     @Bean
     public UserDetailsService userDetailsService() {
         return new CustomUserDetailsServiceImpl();
@@ -62,8 +76,8 @@ public class WebSecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authorizeHttpRequests) ->
                         authorizeHttpRequests
-                                .requestMatchers("/user/register").permitAll()
-                                .requestMatchers("/user/login").permitAll()
+                                .requestMatchers(AUTH_REQUIRED).authenticated()
+                                .requestMatchers(NO_AUTH_REQUIRED).permitAll()
                                 .requestMatchers("/**").authenticated()
                 );
 

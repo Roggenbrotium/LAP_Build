@@ -1,45 +1,32 @@
-package com.example.lap.dao;
+package com.example.lap.dto;
 
-import jakarta.persistence.*;
+import com.example.lap.dao.PaymentMethod;
 
 import java.util.Set;
 
-/**
- * Called ordering because order is a reserved word in MySQL
- */
-@Entity
-public class Ordering {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(length = 45)
+public class OrderingDTO {
     private String email;
 
-    @Column(length = 30)
     private String telephone;
 
-    @Column(length = 50)
     private String billingAddress;
 
-    @Column(length = 50)
     private String deliveryAddress;
 
-    @Column
     private PaymentMethod paymentMethod;
 
-    @ManyToOne
-    private WebUser webUser;
+    private Set<SimpleProductDTO> simpleProducts;
 
-    @OneToMany(mappedBy = "ordering")
-    private Set<OrderingProduct> orderingProducts;
-
-    public Long getId() {
-        return id;
+    public OrderingDTO() {
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public OrderingDTO(String email, String telephone, String billingAddress, String deliveryAddress, PaymentMethod paymentMethod, Set<SimpleProductDTO> simpleProducts) {
+        this.email = email;
+        this.telephone = telephone;
+        this.billingAddress = billingAddress;
+        this.deliveryAddress = deliveryAddress;
+        this.paymentMethod = paymentMethod;
+        this.simpleProducts = simpleProducts;
     }
 
     public String getEmail() {
@@ -82,27 +69,11 @@ public class Ordering {
         this.paymentMethod = paymentMethod;
     }
 
-    public WebUser getWebUser() {
-        return webUser;
+    public Set<SimpleProductDTO> getSimpleProducts() {
+        return simpleProducts;
     }
 
-    public void setWebUser(WebUser webUser) {
-        this.webUser = webUser;
-    }
-
-    public WebUser getUser() {
-        return webUser;
-    }
-
-    public void setUser(WebUser webUser) {
-        this.webUser = webUser;
-    }
-
-    public Set<OrderingProduct> getOrderingProducts() {
-        return orderingProducts;
-    }
-
-    public void setOrderingProducts(Set<OrderingProduct> orderingProducts) {
-        this.orderingProducts = orderingProducts;
+    public void setSimpleProducts(Set<SimpleProductDTO> simpleProducts) {
+        this.simpleProducts = simpleProducts;
     }
 }

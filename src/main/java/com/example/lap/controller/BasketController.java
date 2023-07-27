@@ -2,6 +2,7 @@ package com.example.lap.controller;
 
 import com.example.lap.dao.*;
 import com.example.lap.dto.ProductDTO;
+import com.example.lap.dto.SimpleProductDTO;
 import com.example.lap.security.CustomUserDetails;
 import com.example.lap.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ import java.util.Set;
  * Api endpoint for basket interaction
  */
 @Controller
-@RequestMapping(path="/basket")
+@RequestMapping(path="/api/basket")
 public class BasketController {
     @Autowired
     private BasketRepository basketRepository;
@@ -35,16 +36,10 @@ public class BasketController {
     @Autowired
     private ProductService productService;
 
-    @PostMapping(path="/get")
-    public @ResponseBody Basket getBasketById(@RequestParam Long id) {
-        // This returns a JSON or XML with the users
-        return basketRepository.findBasketById(id);
-    }
-
     @PostMapping(path="/add")
-    public @ResponseBody ResponseEntity<?> addProduct(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam Long id, int amount) {
+    public @ResponseBody ResponseEntity<?> addProduct(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody SimpleProductDTO simpleProductDTO) {
         WebUser user = webUserRepository.findUserByEmail(userDetails.getUsername());
-        Product product = productRepository.findProductById(id);
+        Product product = productRepository.findProductById(simpleProductDTO.getId());
 
         if (product == null) {
             return new ResponseEntity<>("Product does not exist", HttpStatus.OK);
@@ -58,7 +53,7 @@ public class BasketController {
         for (BasketProduct basketProduct: basketProducts) {
             if (basketProduct.getProduct().equals(product)) {
                 int currentAmount = basketProduct.getAmount();
-                basketProduct.setAmount(currentAmount + amount);
+                basketProduct.setAmount(currentAmount + simpleProductDTO.getAmount());
                 exists = true;
                 break;
             }
@@ -66,7 +61,7 @@ public class BasketController {
 
         //add product if not already exists
         if (!exists) {
-            BasketProduct basketProduct = new BasketProduct(product, basket, amount);
+            BasketProduct basketProduct = new BasketProduct(product, basket, simpleProductDTO.getAmount());
             basketProductRepository.save(basketProduct);
             basketProducts.add(basketProduct);
             product.getBasketProducts().add(basketProduct);
@@ -76,8 +71,8 @@ public class BasketController {
         return new ResponseEntity<>("Successfully added product", HttpStatus.OK);
     }
 
-    @PostMapping(path="/remove")
-    public @ResponseBody ResponseEntity<?> removeProduct(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam Long id) {
+    @GetMapping(path="/remove/{id}")
+    public @ResponseBody ResponseEntity<?> removeProduct(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long id) {
         WebUser user = webUserRepository.findUserByEmail(userDetails.getUsername());
         Product product = productRepository.findProductById(id);
 
