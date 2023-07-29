@@ -35,11 +35,6 @@ public class OrderingController {
     @Autowired
     private OrderingService orderingService;
 
-    @PostMapping(path="/get/{id}")
-    public @ResponseBody Ordering getOrderingById(@PathVariable Long id) {
-        return orderingRepository.findOrderingById(id);
-    }
-
     @PostMapping(path="/start")
     public @ResponseBody ResponseEntity<?> startOrder(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody OrderingDTO orderingDTO) {
         Ordering ordering = orderingService.mapOrderingDTOToOrdering(orderingDTO);
