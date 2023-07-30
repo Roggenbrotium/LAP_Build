@@ -11,6 +11,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -38,6 +39,7 @@ public class OrderingController {
     @PostMapping(path="/start")
     public @ResponseBody ResponseEntity<?> startOrder(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody OrderingDTO orderingDTO) {
         Ordering ordering = orderingService.mapOrderingDTOToOrdering(orderingDTO);
+        ordering.setOrderingDate(new Date());
 
         if (userDetails == null) {
             orderingRepository.save(ordering);

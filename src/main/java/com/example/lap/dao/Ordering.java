@@ -2,6 +2,7 @@ package com.example.lap.dao;
 
 import jakarta.persistence.*;
 
+import java.util.Date;
 import java.util.Set;
 
 /**
@@ -25,8 +26,9 @@ public class Ordering {
     @Column(length = 50)
     private String deliveryAddress;
 
-    @Column
     private PaymentMethod paymentMethod;
+
+    private Date orderingDate;
 
     @ManyToOne
     private WebUser webUser;
@@ -80,6 +82,14 @@ public class Ordering {
 
     public void setPaymentMethod(PaymentMethod paymentMethod) {
         this.paymentMethod = paymentMethod;
+    }
+
+    public Date getOrderingDate() {
+        return orderingDate;
+    }
+
+    public void setOrderingDate(Date orderingDate) {
+        this.orderingDate = orderingDate;
     }
 
     public WebUser getWebUser() {
