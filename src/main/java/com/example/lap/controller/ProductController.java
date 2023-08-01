@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -25,13 +26,20 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping(path="/all")
-    public @ResponseBody Iterable<Product> listAllProducts() {
-        return productRepository.findAll();
+    public @ResponseBody Set<ProductDTO> listAllProducts() {
+        List<Product> products = productRepository.findAll();
+        Set<ProductDTO> productDTOS = new HashSet<>();
+
+        for (Product product: products) {
+            productDTOS.add(productService.mapProductToProductDTO(product));
+        }
+
+        return productDTOS;
     }
 
     @GetMapping(path="/get/{id}")
-    public @ResponseBody Product getProductById(@PathVariable Long id) {
-        return productRepository.findProductById(id);
+    public @ResponseBody ProductDTO getProductById(@PathVariable Long id) {
+        return productService.mapProductToProductDTO(productRepository.findProductById(id));
     }
 
     @PostMapping(path="/many")
