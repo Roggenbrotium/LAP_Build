@@ -14,7 +14,7 @@ import java.util.Set;
 public interface ProductRepository extends JpaRepository<Product, Integer> {
     Product findProductById(Long id);
 
-    Set<Product> findProductByIdIn(Set<Long> ids);
+    List<Product> findProductByIdIn(Set<Long> ids);
 
     /**
      * @param amount how many products should be returned

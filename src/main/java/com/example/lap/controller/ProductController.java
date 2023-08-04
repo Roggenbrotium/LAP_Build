@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -26,9 +27,9 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping(path="/all")
-    public @ResponseBody Set<ProductDTO> listAllProducts() {
+    public @ResponseBody List<ProductDTO> listAllProducts() {
         List<Product> products = productRepository.findAll();
-        Set<ProductDTO> productDTOS = new HashSet<>();
+        List<ProductDTO> productDTOS = new ArrayList<>();
 
         for (Product product: products) {
             productDTOS.add(productService.mapProductToProductDTO(product));
@@ -43,9 +44,9 @@ public class ProductController {
     }
 
     @PostMapping(path="/many")
-    public @ResponseBody Set<ProductDTO> getProductsByIds(@RequestBody ProductIdDTO productIdDTO) {
-        Set<Product> products = productRepository.findProductByIdIn(productIdDTO.getIds());
-        Set<ProductDTO> productDTOS = new HashSet<>();
+    public @ResponseBody List<ProductDTO> getProductsByIds(@RequestBody ProductIdDTO productIdDTO) {
+        List<Product> products = productRepository.findProductByIdIn(productIdDTO.getIds());
+        List<ProductDTO> productDTOS = new ArrayList<>();
 
         for (Product product: products) {
             productDTOS.add(productService.mapProductToProductDTO(product));

@@ -12,7 +12,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -97,12 +98,12 @@ public class BasketController {
     }
 
     @GetMapping(path="/list")
-    public @ResponseBody Set<ProductDTO> getProducts(@AuthenticationPrincipal CustomUserDetails userDetails) {
+    public @ResponseBody List<ProductDTO> getProducts(@AuthenticationPrincipal CustomUserDetails userDetails) {
         WebUser user = webUserRepository.findUserByEmail(userDetails.getUsername());
         Basket basket = user.getBasket();
         Set<BasketProduct> basketProducts = basket.getBasketProducts();
 
-        Set<ProductDTO> products = new HashSet<>();
+        List<ProductDTO> products = new ArrayList<>();
 
         for (BasketProduct basketProduct: basketProducts) {
             ProductDTO product = productService.mapProductToProductDTO(basketProduct.getProduct());
