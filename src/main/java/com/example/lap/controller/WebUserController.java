@@ -3,18 +3,13 @@ package com.example.lap.controller;
 import com.example.lap.dao.Basket;
 import com.example.lap.dao.WebUser;
 import com.example.lap.dao.WebUserRepository;
-import com.example.lap.dto.AuthenticateDTO;
-import com.example.lap.dto.ChangePasswordDTO;
-import com.example.lap.dto.RegisterWebUserDTO;
-import com.example.lap.dto.WebUserDTO;
+import com.example.lap.dto.*;
 import com.example.lap.security.CustomUserDetails;
 import com.example.lap.service.WebUserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -54,29 +49,31 @@ public class WebUserController {
      * Registers a user with the given credentials
      */
     @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@RequestBody RegisterWebUserDTO registerWebUserDTO) {
+    public ResponseDTO registerUser(@RequestBody RegisterWebUserDTO registerWebUserDTO) {
         if (webUserRepository.findUserByEmail(registerWebUserDTO.getEmail()) != null) {
-            return new ResponseEntity<>("User already exists!", HttpStatus.OK);
+            return new ResponseDTO("User already exists!", StatusCode.ERROR);
         }
 
         if (registerWebUserDTO.getEmail() == null || registerWebUserDTO.getPassword() == null) {
-            return new ResponseEntity<>("Missing Credentials!", HttpStatus.OK);
+            return new ResponseDTO("Missing Credentials!", StatusCode.ERROR);
         }
 
         WebUser user = webUserService.mapRegisterWebUserDTOToWebUser(registerWebUserDTO);
+        Basket basket = new Basket();
+        user.setBasket(basket);
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
 
         webUserRepository.saveAndFlush(user);
-        return new ResponseEntity<>("Registration successfull!", HttpStatus.OK);
+        return new ResponseDTO("Registration successfull!", StatusCode.OK);
     }
 
     /**
      * Check given credentials and create a new session if correct
      */
     @PostMapping("/login")
-    public ResponseEntity<?> authenticateUser(HttpServletRequest req, @RequestBody AuthenticateDTO authenticateDTO) {
+    public ResponseDTO authenticateUser(HttpServletRequest req, @RequestBody AuthenticateDTO authenticateDTO) {
         Authentication authentication = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(authenticateDTO.getEmail(), authenticateDTO.getPassword()));
 
@@ -85,27 +82,27 @@ public class WebUserController {
         //make the session available for all subsequent requests and create one if not already there
         HttpSession session = req.getSession(true);
         session.setAttribute(SPRING_SECURITY_CONTEXT_KEY, sc);
-        return new ResponseEntity<>("User signed-in successfully!", HttpStatus.OK);
+        return new ResponseDTO("User signed-in successfully!", StatusCode.OK);
     }
 
     /**
      * Invalidates session
      */
     @GetMapping("/logout")
-    public ResponseEntity<?> logOutUser(HttpServletRequest req, HttpServletResponse res) {
+    public ResponseDTO logOutUser(HttpServletRequest req, HttpServletResponse res) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
             new SecurityContextLogoutHandler().logout(req, res, authentication);
         }
 
-        return new ResponseEntity<>("User signed-out successfully!", HttpStatus.OK);
+        return new ResponseDTO("User signed-out successfully!", StatusCode.OK);
     }
 
     /**
      * Invalidates session and deletes user
      */
     @GetMapping("/delete")
-    public ResponseEntity<?> deleteUser(@AuthenticationPrincipal CustomUserDetails userDetails, HttpServletRequest req, HttpServletResponse res) {
+    public ResponseDTO deleteUser(@AuthenticationPrincipal CustomUserDetails userDetails, HttpServletRequest req, HttpServletResponse res) {
         WebUser user = webUserRepository.findUserByEmail(userDetails.getUsername());
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -121,11 +118,11 @@ public class WebUserController {
 
         webUserRepository.saveAndFlush(user);
 
-        return new ResponseEntity<>("User deleted successfully!", HttpStatus.OK);
+        return new ResponseDTO("User deleted successfully!", StatusCode.OK);
     }
 
     @PostMapping("/update")
-    public ResponseEntity<?> updateUser(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody RegisterWebUserDTO registerWebUserDTO) {
+    public ResponseDTO updateUser(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody RegisterWebUserDTO registerWebUserDTO) {
         WebUser user = webUserRepository.findUserByEmail(userDetails.getUsername());
 
         user.setBillingAddress(registerWebUserDTO.getBillingAddress());
@@ -134,11 +131,11 @@ public class WebUserController {
 
         webUserRepository.saveAndFlush(user);
 
-        return new ResponseEntity<>("User updated successfully!", HttpStatus.OK);
+        return new ResponseDTO("User updated successfully!", StatusCode.OK);
     }
 
     @PostMapping("/update/password")
-    public ResponseEntity<?> updateUserPassword(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody ChangePasswordDTO changePasswordDTO) {
+    public ResponseDTO updateUserPassword(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody ChangePasswordDTO changePasswordDTO) {
         WebUser user = webUserRepository.findUserByEmail(userDetails.getUsername());
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
@@ -147,9 +144,9 @@ public class WebUserController {
             user.setPassword(newEncodedPassword);
             webUserRepository.saveAndFlush(user);
 
-            return new ResponseEntity<>("User password updated successfully!", HttpStatus.OK);
+            return new ResponseDTO("User password updated successfully!", StatusCode.OK);
         } else {
-            return new ResponseEntity<>("Incorrect password!", HttpStatus.OK);
+            return new ResponseDTO("Incorrect password!", StatusCode.ERROR);
         }
     }
 }
