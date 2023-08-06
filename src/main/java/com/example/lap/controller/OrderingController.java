@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -55,7 +56,7 @@ public class OrderingController {
             WebUser user = webUserRepository.findUserByEmail(userDetails.getUsername());
             ordering.setWebUser(user);
             orderingRepository.save(ordering);
-            Set<BasketProduct> basketProducts = user.getBasket().getBasketProducts();
+            List<BasketProduct> basketProducts = user.getBasket().getBasketProducts();
             Set<OrderingProduct> orderingProducts = new HashSet<>();
             for (BasketProduct basketProduct: basketProducts) {
                 OrderingProduct orderingProduct = new OrderingProduct(basketProduct.getProduct(), ordering, basketProduct.getAmount());

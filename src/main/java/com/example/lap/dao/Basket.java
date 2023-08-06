@@ -2,7 +2,7 @@ package com.example.lap.dao;
 
 import jakarta.persistence.*;
 
-import java.util.Set;
+import java.util.List;
 
 @Entity
 public class Basket {
@@ -11,7 +11,7 @@ public class Basket {
     private Long id;
 
     @OneToMany(mappedBy = "basket")
-    private Set<BasketProduct> basketProducts;
+    private List<BasketProduct> basketProducts;
 
     public Long getId() {
         return id;
@@ -21,11 +21,11 @@ public class Basket {
         this.id = id;
     }
 
-    public Set<BasketProduct> getBasketProducts() {
+    public List<BasketProduct> getBasketProducts() {
         return basketProducts;
     }
 
-    public void setBasketProducts(Set<BasketProduct> basketProducts) {
+    public void setBasketProducts(List<BasketProduct> basketProducts) {
         this.basketProducts = basketProducts;
     }
 }
