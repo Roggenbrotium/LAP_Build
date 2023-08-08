@@ -31,7 +31,7 @@ relationship you can mark the attribute as not null for the constraint to be res
 <br>
 Each dao requires a repository for its database interactions.
 
-For cross-site requests to you need to generate a p12 certificate for the webservice tomcat server <a href="https://www.tutorialspoint.com/spring_boot/spring_boot_enabling_https.htm"> here </a> and default web-certificates
+For cross-site requests to you need to generate a p12 certificate for the webservice tomcat server <a href="https://www.tutorialspoint.com/spring_boot/spring_boot_enabling_https.htm"> here </a>, to execute the command go here "C:\Program Files\Java\jdk1.6.0_26\bin\keytool.exe", and default web-certificates
 for the react frontend apache server <a href="https://medium.com/@praveenmobdev/localhost-as-https-with-reactjs-app-on-windows-a1270d7fbd1f"> here </a>
 
 
