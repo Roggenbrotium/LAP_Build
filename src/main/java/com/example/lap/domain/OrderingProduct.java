@@ -1,4 +1,4 @@
-package com.example.lap.dao;
+package com.example.lap.domain;
 
 import jakarta.persistence.*;
 
@@ -6,9 +6,9 @@ import jakarta.persistence.*;
  * A table between a many-to-many relationship is only necessary if it has additional columns
  */
 @Entity
-public class BasketProduct {
+public class OrderingProduct {
     @EmbeddedId
-    private BasketProductKey id;
+    private OrderingProductKey id;
 
     @ManyToOne
     @MapsId("productId")
@@ -16,27 +16,27 @@ public class BasketProduct {
     private Product product;
 
     @ManyToOne
-    @MapsId("basketId")
-    @JoinColumn(name = "basket_id")
-    private Basket basket;
+    @MapsId("orderingId")
+    @JoinColumn(name = "ordering_id")
+    private Ordering ordering;
 
     private int amount;
 
-    public BasketProduct() {
+    public OrderingProduct() {
     }
 
-    public BasketProduct(Product product, Basket basket, int amount) {
+    public OrderingProduct(Product product, Ordering ordering, int amount) {
         this.product = product;
-        this.basket = basket;
+        this.ordering = ordering;
         this.amount = amount;
-        this.id = new BasketProductKey(product.getId(), basket.getId());
+        this.id = new OrderingProductKey(product.getId(), ordering.getId());
     }
 
-    public BasketProductKey getId() {
+    public OrderingProductKey getId() {
         return id;
     }
 
-    public void setId(BasketProductKey id) {
+    public void setId(OrderingProductKey id) {
         this.id = id;
     }
 
@@ -48,12 +48,12 @@ public class BasketProduct {
         this.product = product;
     }
 
-    public Basket getBasket() {
-        return basket;
+    public Ordering getOrdering() {
+        return ordering;
     }
 
-    public void setBasket(Basket basket) {
-        this.basket = basket;
+    public void setOrdering(Ordering ordering) {
+        this.ordering = ordering;
     }
 
     public int getAmount() {

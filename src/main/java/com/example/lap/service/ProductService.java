@@ -1,6 +1,6 @@
 package com.example.lap.service;
 
-import com.example.lap.dao.Product;
+import com.example.lap.domain.Product;
 import com.example.lap.dto.ProductDTO;
 
 public interface ProductService {

@@ -1,7 +1,7 @@
 package com.example.lap.test;
 
-import com.example.lap.dao.WebUser;
-import com.example.lap.dao.WebUserRepository;
+import com.example.lap.domain.WebUser;
+import com.example.lap.domain.WebUserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;

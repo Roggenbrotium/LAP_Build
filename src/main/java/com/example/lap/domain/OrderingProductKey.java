@@ -1,4 +1,4 @@
-package com.example.lap.dao;
+package com.example.lap.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;

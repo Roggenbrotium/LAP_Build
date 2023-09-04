@@ -1,6 +1,6 @@
 package com.example.lap.controller;
 
-import com.example.lap.dao.*;
+import com.example.lap.domain.*;
 import com.example.lap.dto.OrderingDTO;
 import com.example.lap.security.CustomUserDetails;
 import com.example.lap.service.OrderingService;

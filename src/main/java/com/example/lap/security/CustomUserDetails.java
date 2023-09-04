@@ -3,7 +3,7 @@ package com.example.lap.security;
 import java.util.Collection;
 import java.util.HashSet;
 
-import com.example.lap.dao.WebUser;
+import com.example.lap.domain.WebUser;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 

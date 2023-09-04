@@ -1,7 +1,7 @@
 package com.example.lap.service;
 
-import com.example.lap.dao.WebUser;
-import com.example.lap.dao.WebUserRepository;
+import com.example.lap.domain.WebUser;
+import com.example.lap.domain.WebUserRepository;
 import com.example.lap.security.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

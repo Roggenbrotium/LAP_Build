@@ -1,6 +1,6 @@
 package com.example.lap.controller;
 
-import com.example.lap.dao.*;
+import com.example.lap.domain.*;
 import com.example.lap.dto.ProductDTO;
 import com.example.lap.dto.ResponseDTO;
 import com.example.lap.dto.SimpleProductDTO;

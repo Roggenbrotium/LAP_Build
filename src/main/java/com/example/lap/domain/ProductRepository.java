@@ -1,4 +1,4 @@
-package com.example.lap.dao;
+package com.example.lap.domain;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

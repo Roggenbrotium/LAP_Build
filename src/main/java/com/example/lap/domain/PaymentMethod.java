@@ -1,4 +1,4 @@
-package com.example.lap.dao;
+package com.example.lap.domain;
 
 public enum PaymentMethod {
     UNKNOWN(0),

@@ -1,6 +1,6 @@
 package com.example.lap.dto;
 
-import com.example.lap.dao.PaymentMethod;
+import com.example.lap.domain.PaymentMethod;
 
 import java.util.Set;
 

@@ -79,7 +79,7 @@ public class WebSecurityConfig {
     CorsConfigurationSource corsConfigurationSource()
     {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("https://localhost:3000", "https://192.168.8.100:3000"));
+        configuration.setAllowedOrigins(List.of("https://localhost:3000", "https://192.168.0.237:3000"));
         configuration.setAllowCredentials(true);
         configuration.setAllowedHeaders(Arrays.asList("Origin", "Content-Type", "Accept"));
         configuration.setAllowedMethods(Arrays.asList("GET","POST"));

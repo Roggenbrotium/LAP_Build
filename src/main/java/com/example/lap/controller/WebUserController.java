@@ -1,8 +1,8 @@
 package com.example.lap.controller;
 
-import com.example.lap.dao.Basket;
-import com.example.lap.dao.WebUser;
-import com.example.lap.dao.WebUserRepository;
+import com.example.lap.domain.Basket;
+import com.example.lap.domain.WebUser;
+import com.example.lap.domain.WebUserRepository;
 import com.example.lap.dto.*;
 import com.example.lap.security.CustomUserDetails;
 import com.example.lap.service.WebUserService;
@@ -19,8 +19,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Objects;
 
 import static org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY;
 

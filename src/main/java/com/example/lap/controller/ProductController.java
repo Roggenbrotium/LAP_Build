@@ -1,7 +1,7 @@
 package com.example.lap.controller;
 
-import com.example.lap.dao.Product;
-import com.example.lap.dao.ProductRepository;
+import com.example.lap.domain.Product;
+import com.example.lap.domain.ProductRepository;
 import com.example.lap.dto.ProductDTO;
 import com.example.lap.dto.ProductIdDTO;
 import com.example.lap.service.ProductService;
@@ -10,9 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Api endpoint for product interaction
